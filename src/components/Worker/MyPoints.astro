@@ -1,0 +1,35 @@
+---
+import StatsCard from '../Common/StatsCard.astro';
+
+const {points}=Astro.props;
+---
+
+<div class="stats">
+
+<StatsCard
+label="Gesamtpunkte"
+value={points.total}
+/>
+
+
+<StatsCard
+label="Diese Woche"
+value={points.weekly}
+/>
+
+
+<StatsCard
+label="Dieser Monat"
+value={points.monthly}
+/>
+
+</div>
+
+
+<style>
+.stats {
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:1rem;
+}
+</style>

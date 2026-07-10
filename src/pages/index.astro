@@ -1,0 +1,46 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import AdminDashboard from '../components/Admin/AdminDashboard.astro';
+
+
+const adminData = {
+  activeUsers: 15,
+
+  stats: {
+    totalPoints: 3250,
+    avgPerPerson: 162,
+    weekNumber: 28
+  },
+
+  ranking: [
+    {
+      user: {
+        id: 1,
+        fullName: 'Johannes Müller',
+        email: 'jan@example.com'
+      },
+      points: 500
+    },
+    {
+      user: {
+        id: 2,
+        fullName: 'Anne Schneider',
+        email: 'anna@example.com'
+      },
+      points: 450
+    },
+    {
+      user: {
+        id: 3,
+        fullName: 'Peter Hoffmann',
+        email: 'piotr@example.com'
+      },
+      points: 390
+    }
+  ]
+};
+---
+
+<BaseLayout>
+  <AdminDashboard data={adminData} />
+</BaseLayout>

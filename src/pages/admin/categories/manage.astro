@@ -1,0 +1,101 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import Button from '../../../components/Common/Button.astro';
+
+interface Category {
+  id: number;
+  name: string;
+}
+
+let categories: Category[] = [];
+
+try {
+  const response = await fetch(
+    'http://domena.de/api/categories'
+  );
+
+  if (!response.ok) {
+    throw new Error(
+      `API error: ${response.status}`
+    );
+  }
+
+  categories = await response.json();
+
+} catch (error) {
+  console.error('Nie można pobrać kategorii:', error);
+}
+
+---
+
+<BaseLayout title="Kategorien verwalten" showBackButton>
+
+<section class="page-header">
+  <h1>Kategorien verwalten</h1>
+  <p>
+    Kategorien für das Punktesystem verwalten.
+  </p>
+</section>
+
+
+<section class="page-content">
+
+  <div class="card">
+
+    <h2>Vorhandene Kategorien</h2>
+
+    {
+      categories.length > 0 ? (
+
+        <ul class="category-list">
+
+          {
+            categories.map((category) => (
+              <li class="category-item">
+                {category.name}
+              </li>
+            ))
+          }
+
+        </ul>
+
+      ) : (
+
+        <p>Keine Kategorien vorhanden.</p>
+
+      )
+    }
+
+
+    <form id="category-form" class="form">
+
+      <div class="form__group">
+
+        <label class="form__label">
+          Neue Kategorie
+        </label>
+
+        <input
+          class="form__input"
+          name="name"
+          placeholder="Neue Kategorie"
+          required
+        />
+
+      </div>
+
+
+      <Button variant="primary" type="submit">
+        Hinzufügen
+      </Button>
+
+
+    </form>
+
+
+  </div>
+
+</section>
+
+
+</BaseLayout>

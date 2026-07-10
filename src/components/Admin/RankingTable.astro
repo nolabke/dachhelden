@@ -1,0 +1,105 @@
+---
+interface Props {
+  ranking: any[];
+}
+
+const { ranking } = Astro.props;
+const medals = ['🥇', '🥈', '🥉'];
+
+---
+
+<div class="ranking-container">
+  <h3 class="ranking__title">Rangliste der aktuellen Woche</h3>
+  <table class="ranking__table">
+    <thead>
+      <tr>
+        <th>Platz</th>
+        <th>Mitarbeitende</th>
+        <th style="text-align: right;">Punkte</th>
+        <th style="text-align: right;">Aktionen</th>
+      </tr>
+    </thead>
+    <tbody>
+      {ranking.map((entry, idx) => (
+        <tr class="ranking__row">
+          <td class="ranking__medal">{medals[idx] || idx + 1}</td>
+          <td class="ranking__name">{entry.user.fullName}</td>
+          <td class="ranking__points">{entry.points} Pkt.</td>
+          <td class="ranking__actions">
+            <button class="ranking__action-btn">⋯</button>
+          </td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+</div>
+
+<style>
+  .ranking-container {
+    background-color: var(--surface-1);
+    border: 0.5px solid var(--border);
+    border-radius: 12px;
+    padding: 1.25rem;
+    margin-bottom: 2rem;
+  }
+
+  .ranking__title {
+    font-size: var(--font-size-lg);
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+  }
+
+  .ranking__table {
+    width: 100%;
+    font-size: var(--font-size-md);
+  }
+
+  .ranking__table th {
+    padding: 0.75rem;
+    font-weight: 600;
+    text-align: left;
+    background-color: var(--surface-2);
+  }
+
+  .ranking__table td {
+    padding: 0.75rem;
+    border-bottom: 0.5px solid var(--border);
+  }
+
+  .ranking__row:hover {
+    background-color: var(--surface-2);
+  }
+
+  .ranking__medal {
+    font-size: var(--font-size-lg);
+    width: 50px;
+  }
+
+  .ranking__name {
+    font-weight: 600;
+  }
+
+  .ranking__points {
+    text-align: right;
+    font-weight: 600;
+    color: var(--text-accent);
+  }
+
+  .ranking__actions {
+    text-align: right;
+  }
+
+  .ranking__action-btn {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-size: var(--font-size-lg);
+    padding: 0;
+  }
+
+  .ranking__action-btn:hover {
+    color: var(--text-primary);
+  }
+</style>

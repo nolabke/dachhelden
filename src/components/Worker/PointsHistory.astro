@@ -1,0 +1,132 @@
+---
+interface HistoryItem {
+  date:string;
+  category:string;
+  points:number;
+  reason:string;
+}
+
+
+interface Props {
+  history: HistoryItem[];
+}
+
+
+const { history } = Astro.props;
+
+---
+
+<div class="card">
+
+<h2 class="title">
+Punkteverlauf
+</h2>
+
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>
+Datum
+</th>
+
+<th>
+Kategorie
+</th>
+
+<th>
+Punkte
+</th>
+
+<th>
+Grund
+</th>
+
+</tr>
+
+</thead>
+
+
+<tbody>
+
+{
+history.map(item => (
+
+<tr>
+
+<td>
+{item.date}
+</td>
+
+
+<td>
+{item.category}
+</td>
+
+
+<td class="points">
++{item.points}
+</td>
+
+
+<td>
+{item.reason}
+</td>
+
+
+</tr>
+
+))
+}
+
+</tbody>
+
+</table>
+
+</div>
+
+
+<style>
+
+.card {
+  background:var(--surface-1);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:1.25rem;
+}
+
+
+.title {
+  margin-bottom:1rem;
+}
+
+
+.points {
+  color:var(--text-success);
+  font-weight:600;
+}
+
+
+table {
+  width:100%;
+  border-collapse:collapse;
+}
+
+
+th,
+td {
+  padding:.75rem;
+  border-bottom:1px solid var(--border);
+}
+
+
+th {
+  text-align:left;
+  color:var(--text-secondary);
+}
+
+
+</style>

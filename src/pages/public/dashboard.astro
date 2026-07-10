@@ -1,0 +1,101 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PrizesSection from '../../components/Public/PrizesSection.astro';
+import PublicDashboard from '../../components/Public/PublicDashboard.astro';
+import type { DashboardData } from '../../utils/types';
+
+
+const prizes = [
+  {
+    position: 1,
+    medal: '🥇',
+    title: 'Anna Müller',
+    description: 'Wochensiegerin',
+    reward: 'Kostenloses Mittagessen für zwei Personen',
+    icon: '🍽️',
+  },
+  {
+    position: 2,
+    medal: '🥈',
+    title: 'Marcus Schmidt',
+    description: '2. Platz',
+    reward: 'Kaffee und Berliner im Büro',
+    icon: '☕',
+  },
+  {
+    position: 3,
+    medal: '🥉',
+    title: 'Sophia Weber',
+    description: '3. Platz',
+    reward: 'Getränkegutschein (30 €)',
+    icon: '🥤',
+  },
+];
+
+const mockDashboardData: DashboardData = {
+  currentUser: {
+    fullName: "Max Müller",
+    id: '',
+    email: '',
+    role: 'user'
+    },
+    myPoints: 120,
+    statsWeek: {
+        totalPoints: 520,
+        avgPerPerson: 43,
+        activeUsers: 12,
+        weekNumber: 28
+    },
+    ranking: [
+        {
+        rank: 1,
+        user: {
+    fullName: "Max Müller",
+    id: '',
+    email: '',
+    role: 'user'
+    },
+        points: 120,
+        change: "up"
+        },
+        {
+        rank: 2,
+        user: {
+    fullName: "Anna Schmidt",
+    id: '',
+    email: '',
+    role: 'user'
+    },
+        points: 110,
+        change: "same"
+        },
+        {
+        rank: 3,
+        user: {
+    fullName: "Lukas Schneider",
+    id: '',
+    email: '',
+    role: 'user'
+    },
+      points: 95,
+      change: "down"
+    }
+  ]
+};
+---
+
+<BaseLayout title="Dashboard">
+    
+  <div style="padding: 1.5rem;">
+    <h1 style="font-size: var(--font-size-2xl); font-weight: 700; margin-bottom: 2rem;">
+      📊 Ranking dieser Woche
+    </h1>
+    
+    {}
+    <PrizesSection prizes={prizes} />
+    
+    
+    {}
+    <PublicDashboard data={mockDashboardData} />
+  </div>
+</BaseLayout>

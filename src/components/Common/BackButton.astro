@@ -1,0 +1,43 @@
+<button id="back-button" class="back-button" type="button">
+  ← Zurück
+</button>
+
+<script>
+  const button = document.querySelector('#back-button');
+
+  button?.addEventListener('click', () => {
+    if (window.history.length > 1) {
+      window.history.back();
+    } else {
+      window.location.href = '/';
+    }
+  });
+</script>
+
+<style>
+  .back-button {
+    display: inline-flex;
+    align-items: center;
+    gap: .5rem;
+
+    padding: .6rem 1rem;
+
+    background: var(--surface-2);
+    color: var(--text-primary);
+
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+
+    cursor: pointer;
+    transition: all .2s ease;
+  }
+
+  .back-button:hover {
+    background: var(--surface-1);
+    border-color: var(--border-strong);
+  }
+
+  .back-button:active {
+    transform: scale(.98);
+  }
+</style>

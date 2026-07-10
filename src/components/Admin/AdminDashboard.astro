@@ -1,0 +1,88 @@
+---
+import StatsCard from '../Common/StatsCard.astro';
+import RankingTable from './RankingTable.astro';
+import PointsForm from './PointsForm.astro';
+import Button from '../Common/Button.astro';
+
+interface Props {
+  data: any;
+}
+
+const { data } = Astro.props;
+
+---
+
+<div class="admin-dashboard">
+  <h1 class="admin-dashboard__title">Admin Dashboard</h1>
+
+{/* Statistiken */}
+<div class="admin-dashboard__stats">
+  <StatsCard label="Aktive Mitarbeitende" value={`${data.activeUsers}/20`} />
+  <StatsCard label="Vergebene Punkte" value={data.stats.totalPoints} />
+  <StatsCard label="Durchschnittliche Punktzahl" value={`${data.stats.avgPerPerson} Pkt.`} />
+  <StatsCard label="Aktuelle Woche" value={`Woche ${data.stats.weekNumber}`} />
+</div>
+
+  {/* Akcje */}
+ <div class="admin-dashboard__actions">
+
+  <Button variant="primary" href="/admin/points/add">
+    + Punkte vergeben
+  </Button>
+
+  <Button variant="secondary" href="/admin/employees/add">
+    📋 Mitarbeitende hinzufügen
+  </Button>
+
+  <Button variant="secondary" href="/admin/categories/manage">
+    ⚙️ Kategorien verwalten
+  </Button>
+
+  <Button variant="secondary" href="/admin/week/reset">
+    ↻ Woche zurücksetzen
+  </Button>
+
+</div>
+
+  {/* Ranking */}
+  <RankingTable ranking={data.ranking} />
+
+  {/* Form */}
+  <PointsForm />
+</div>
+
+<style>
+  .admin-dashboard {
+    padding: 1.5rem;
+  }
+
+  .admin-dashboard__title {
+    font-size: var(--font-size-2xl);
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+    color: var(--text-primary);
+  }
+
+  .admin-dashboard__stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--gap-md);
+    margin-bottom: 1.5rem;
+  }
+
+  .admin-dashboard__actions {
+    display: flex;
+    gap: var(--gap-md);
+    margin-bottom: 1.5rem;
+  }
+
+  @media (max-width: 768px) {
+    .admin-dashboard__stats {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    .admin-dashboard__actions {
+      flex-wrap: wrap;
+    }
+  }
+</style>

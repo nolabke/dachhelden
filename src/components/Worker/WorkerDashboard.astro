@@ -1,0 +1,32 @@
+---
+import ProfileCard from './ProfileCard.astro';
+import MyPoints from './MyPoints.astro';
+import Leaderboard from './Leaderboard.astro';
+import PointsHistory from './PointsHistory.astro';
+
+interface Props {
+  data:any;
+}
+
+const {data}=Astro.props;
+---
+
+<div class="worker-dashboard">
+
+  <ProfileCard user={data.user}/>
+
+  <MyPoints points={data.points}/>
+
+  <PointsHistory history={data.history}/>
+  <Leaderboard ranking={data.ranking}/>
+
+</div>
+
+
+<style>
+.worker-dashboard {
+  display:flex;
+  flex-direction:column;
+  gap:1.5rem;
+}
+</style>

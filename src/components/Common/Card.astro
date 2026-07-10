@@ -1,0 +1,26 @@
+---
+interface Props {
+  children: any;
+  highlighted?: boolean;
+}
+
+const { highlighted = false } = Astro.props;
+---
+
+<div class={`card ${highlighted ? 'card--highlighted' : ''}`}>
+  <slot />
+</div>
+
+<style>
+  .card {
+    background-color: var(--surface-2);
+    border: 0.5px solid var(--border);
+    border-radius: 12px;
+    padding: 1.25rem;
+  }
+
+  .card--highlighted {
+    border: 2px solid var(--fill-accent);
+    border-radius: 12px;
+  }
+</style>

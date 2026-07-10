@@ -1,0 +1,295 @@
+---
+interface Prize {
+  position: number;
+  medal: string;
+  title: string;
+  description: string;
+  reward: string;
+  icon: string;
+}
+
+interface Props {
+  prizes: Prize[];
+}
+
+const { prizes } = Astro.props;
+---
+
+<div class="prizes-section">
+    <div class="prizes-header">
+       <div class="prizes-header">
+        <h3 class="reward-title">Diese Woche:</h3>
+        <p class="reward-text">🍕 Pizza-Gutschein bei Mama Mia Köln </p>
+    </div>
+    </div>
+
+  <div class="prizes-container">
+    {prizes.map((prize) => (
+      <div class={`prize-card prize-card--${prize.position}`}>
+        <div class="prize-card__medal">{prize.medal}</div>
+        <div class="prize-card__content">
+          <h3 class="prize-card__title">{prize.title}</h3>
+          <p class="prize-card__position">{prize.description}</p>
+          <div class="prize-card__reward">
+            <span class="prize-card__icon">{prize.icon}</span>
+            <span class="prize-card__text">{prize.reward}</span>
+          </div>
+        </div>
+      </div>
+    ))}
+  </div>
+
+  {}
+<div class="bonuses-section">
+  <h3 class="bonuses-title">🌟 Bonusbelohnungen für besondere Leistungen</h3>
+  <div class="bonuses-grid">
+
+    <div class="bonus-item">
+      <div class="bonus-icon">🔥</div>
+      <p class="bonus-name">Konstante Leistung</p>
+      <p class="bonus-reward">Frühstück für das Team</p>
+      <p class="bonus-description">
+        Für kontinuierlich gute Ergebnisse über mehrere Wochen
+      </p>
+      
+    </div>
+
+    <div class="bonus-item">
+      <div class="bonus-icon">🚀</div>
+      <p class="bonus-name">Größter Fortschritt</p>
+      <p class="bonus-reward">Tankgutschein</p>
+      <p class="bonus-description">
+        Für die größte Verbesserung im Vergleich zur Vorwoche
+      </p>
+      
+    </div>
+
+    <div class="bonus-item">
+      <div class="bonus-icon">⭐</div>
+      <p class="bonus-name">Zuverlässigste Arbeit</p>
+      <p class="bonus-reward">Zusätzlicher freier Nachmittag</p>
+      <p class="bonus-description">
+        Für Qualität, Verlässlichkeit und regelmäßige Leistung
+      </p>
+      
+    </div>
+
+    <div class="bonus-item">
+      <div class="bonus-icon">🏆</div>
+      <p class="bonus-name">Dachdecker-Champion</p> 
+      <p class="bonus-reward">Gutschein nach Wahl</p>
+      <p class="bonus-description">
+        Für das beste Ergebnis im Monatsranking
+      </p>
+     
+    </div>
+
+  </div>
+</div>
+</div>
+
+<style>
+  .prizes-section {
+    background: linear-gradient(135deg, var(--bg-accent) 0%, var(--surface-1) 100%);
+    border: 0.5px solid var(--border);
+    border-radius: 12px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .prizes-header {
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+
+  .prizes-title {
+    font-size: var(--font-size-2xl);
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+  }
+
+  .prizes-subtitle {
+    font-size: var(--font-size-base);
+    color: var(--text-secondary);
+    margin: 0;
+  }
+
+  .prizes-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .prize-card {
+    background-color: var(--surface-2);
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: center;
+    transition: all 0.3s ease;
+    position: relative;
+  }
+
+  .prize-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  }
+
+.prize-card--1 {
+    background: linear-gradient(135deg, #fff9e6 0%, var(--surface-2) 100%);
+    border: 2px solid #ffd700;
+    transform: scale(1.05);
+  }
+
+  .prize-card--1:hover {
+    box-shadow: 0 12px 24px rgba(255, 215, 0, 0.2);
+  }
+
+ 
+  .prize-card--2 {
+    background: linear-gradient(135deg, #f0f0f0 0%, var(--surface-2) 100%);
+    border: 2px solid #c0c0c0;
+  }
+
+  
+  .prize-card--3 {
+    background: linear-gradient(135deg, #faf3e0 0%, var(--surface-2) 100%);
+    border: 2px solid #cd7f32;
+  }
+
+  .prize-card__medal {
+    font-size: 48px;
+    margin-bottom: 1rem;
+  }
+
+  .prize-card__title {
+    font-size: var(--font-size-lg);
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0 0 0.25rem;
+  }
+
+  .prize-card__position {
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+    margin: 0 0 1rem;
+  }
+
+  .prize-card__reward {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    background-color: var(--bg-accent);
+    padding: 0.75rem;
+    border-radius: 8px;
+    margin-top: 1rem;
+  }
+
+  .prize-card__icon {
+    font-size: 20px;
+  }
+
+  .prize-card__text {
+    font-size: var(--font-size-md);
+    font-weight: 600;
+    color: var(--text-accent);
+  }
+
+  .bonuses-section {
+    border-top: 2px solid var(--border);
+    padding-top: 1.5rem;
+  }
+
+  .bonuses-title {
+    font-size: var(--font-size-lg);
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0 0 1rem;
+    text-align: center;
+  }
+
+  .bonuses-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+  }
+
+  .bonus-item {
+    background-color: var(--surface-2);
+    border: 0.5px solid var(--border);
+    border-radius: 8px;
+    padding: 1rem;
+    text-align: center;
+    transition: all 0.2s ease;
+  }
+
+  .bonus-item:hover {
+    border-color: var(--fill-accent);
+    box-shadow: 0 4px 12px rgba(0, 102, 204, 0.1);
+  }
+
+  .bonus-icon {
+    font-size: 32px;
+    margin-bottom: 0.5rem;
+  }
+
+  .bonus-name {
+    font-size: var(--font-size-sm);
+    font-weight: 600;
+    color: var(--text-primary);
+    margin: 0.5rem 0;
+  }
+
+  .bonus-reward {
+    font-size: var(--font-size-xs);
+    color: #0066cd
+    font-weight: 600;
+    margin-bottom: 12px;
+    
+    border-radius: 6px;
+    background-color: #e6f1fb;
+    padding: 6px;
+  }
+
+  .bonus-description {
+    font-size: var(--font-size-xs);
+    font-weight: 300;
+    margin: 0;
+  }
+
+  @media (max-width: 1024px) {
+    .prizes-container {
+      grid-template-columns: 1fr;
+    }
+
+    .prize-card--1 {
+      transform: scale(1);
+    }
+
+    .bonuses-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .prizes-section {
+      padding: 1rem;
+    }
+
+    .prizes-container {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+
+    .bonuses-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .prizes-title {
+      font-size: var(--font-size-xl);
+    }
+  }
+</style>

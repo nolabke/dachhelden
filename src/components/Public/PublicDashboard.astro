@@ -1,0 +1,416 @@
+---
+import type { DashboardData, PointsEntry} from '../../utils/types';
+
+
+interface Props {
+  data: DashboardData
+}
+
+const { data } = Astro.props;
+
+
+const podium = data.ranking.slice(0, 3);
+const restRanking = data.ranking.slice(3);
+
+// Helper do ikonek zmian
+const getChangeIcon = (change?: string) => {
+  switch (change) {
+    case 'up':
+      return '↑';
+    case 'down':
+      return '↓';
+    default:
+      return '↔️';
+  }
+};
+
+
+const getPercentageToLeader = (points: number) => {
+  const leaderPoints = podium[0]?.points || 0;
+  if (leaderPoints === 0) return 100;
+  return Math.round((points / leaderPoints) * 100);
+};
+---
+
+<div class="public-dashboard">
+  {/* PODIUM - TOP 3 */}
+  <div class="podium-section">
+    <div class="podium-container">
+      {podium.map((entry, idx) => {
+        const medals = ['🥇', '🥈', '🥉'];
+        const sizes = ['large', 'medium', 'small'];
+        const positions = ['first', 'second', 'third'];
+        
+        return (
+          <div class={`podium-card podium-card--${positions[idx]}`}>
+            <div class="podium-card__medal">{medals[idx]}</div>
+            <div class="podium-card__rank">#{entry.rank}</div>
+            <h3 class="podium-card__name">{entry.user.fullName}</h3>
+            <p class="podium-card__points">{entry.points} pkt</p>
+            <p class="podium-card__percentage">
+              {getPercentageToLeader(entry.points)}% des Spitzenwerts
+            </p>
+          </div>
+        );
+      })}
+    </div>
+  </div>
+
+  {}
+  <div class="stats-row">
+  <div class="stat-box">
+    <p class="stat-label">Gesamtpunkte</p>
+    <p class="stat-value">{data.statsWeek.totalPoints}</p>
+  </div>
+  <div class="stat-box">
+    <p class="stat-label">Durchschnitt pro Person</p>
+    <p class="stat-value">{data.statsWeek.avgPerPerson} Pkt.</p>
+  </div>
+  <div class="stat-box">
+    <p class="stat-label">Aktive Personen</p>
+    <p class="stat-value">{data.statsWeek.activeUsers}/20</p>
+  </div>
+  <div class="stat-box">
+    <p class="stat-label">Woche</p>
+    <p class="stat-value">#{data.statsWeek.weekNumber}</p>
+  </div>
+</div>
+
+{}
+<div class="ranking-section">
+  <h2 class="ranking-title">Gesamtranking</h2>
+  <div class="ranking-table-wrapper">
+    <table class="ranking-table">
+      <thead>
+        <tr>
+          <th class="ranking-col--rank">Rang</th>
+          <th class="ranking-col--name">Mitarbeiter</th>
+          <th class="ranking-col--points">Punkte</th>
+          <th class="ranking-col--percentage">% zum Spitzenreiter</th>
+          <th class="ranking-col--change">Veränderung</th>
+        </tr>
+      </thead>
+      <tbody>
+          {podium.map((entry) => (
+            <tr class="ranking-row ranking-row--podium">
+              <td class="ranking-cell ranking-col--rank">
+                <span class="ranking-medal">
+                  {entry.rank === 1 && '🥇'}
+                  {entry.rank === 2 && '🥈'}
+                  {entry.rank === 3 && '🥉'}
+                </span>
+              </td>
+              <td class="ranking-cell ranking-col--name">
+                <strong>{entry.user.fullName}</strong>
+              </td>
+              <td class="ranking-cell ranking-col--points">
+                <span class="ranking-points">{entry.points} pkt</span>
+              </td>
+              <td class="ranking-cell ranking-col--percentage">
+                {getPercentageToLeader(entry.points)}%
+              </td>
+              <td class="ranking-cell ranking-col--change">
+                {getChangeIcon(entry.change)}
+              </td>
+            </tr>
+          ))}
+
+          {restRanking.map((entry) => (
+            <tr class="ranking-row">
+              <td class="ranking-cell ranking-col--rank">{entry.rank}</td>
+              <td class="ranking-cell ranking-col--name">{entry.user.fullName}</td>
+              <td class="ranking-cell ranking-col--points">{entry.points} pkt</td>
+              <td class="ranking-cell ranking-col--percentage">
+                {getPercentageToLeader(entry.points)}%
+              </td>
+              <td class="ranking-cell ranking-col--change">
+                {getChangeIcon(entry.change)}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<style>
+  .public-dashboard {
+    padding: 0;
+  }
+
+ 
+  .podium-section {
+    margin-bottom: 2rem;
+  }
+
+  .podium-container {
+    display: grid;
+    grid-template-columns: 1fr 1.3fr 1fr;
+    gap: 1.5rem;
+    align-items: flex-end;
+    margin-bottom: 2rem;
+  }
+
+  .podium-card {
+    background-color: var(--surface-2);
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: center;
+    transition: all 0.3s ease;
+  }
+
+  .podium-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  }
+
+  .podium-card--first {
+    background: linear-gradient(135deg, #fff9e6 0%, var(--surface-2) 100%);
+    border: 2px solid #ffd700;
+    order: 2;
+    transform: scale(1.05);
+  }
+
+  .podium-card--first:hover {
+    box-shadow: 0 12px 24px rgba(255, 215, 0, 0.2);
+  }
+
+  .podium-card--second {
+    background: linear-gradient(135deg, #f0f0f0 0%, var(--surface-2) 100%);
+    border: 2px solid #c0c0c0;
+    order: 1;
+  }
+
+  .podium-card--third {
+    background: linear-gradient(135deg, #faf3e0 0%, var(--surface-2) 100%);
+    border: 2px solid #cd7f32;
+    order: 3;
+  }
+
+  .podium-card__medal {
+    font-size: 48px;
+    margin-bottom: 0.5rem;
+  }
+
+  .podium-card__rank {
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+  }
+
+  .podium-card__name {
+    font-size: var(--font-size-lg);
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0.5rem 0;
+  }
+
+  .podium-card__points {
+    font-size: var(--font-size-3xl);
+    font-weight: 700;
+    color: var(--text-accent);
+    margin: 0.75rem 0;
+  }
+
+  .podium-card__percentage {
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+    margin: 0;
+  }
+
+
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--gap-md);
+    margin-bottom: 2rem;
+  }
+
+  .stat-box {
+    background-color: var(--surface-1);
+    border: 0.5px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1rem;
+  }
+
+  .stat-label {
+    font-size: var(--font-size-sm);
+    color: var(--text-secondary);
+    margin: 0 0 0.5rem;
+  }
+
+  .stat-value {
+    font-size: var(--font-size-2xl);
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0;
+  }
+
+
+  .ranking-section {
+    background-color: var(--surface-1);
+    border: 0.5px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+  }
+
+  .ranking-title {
+    font-size: var(--font-size-lg);
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0 0 1rem;
+  }
+
+  .ranking-table-wrapper {
+    overflow-x: auto;
+  }
+
+  .ranking-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: var(--font-size-md);
+  }
+
+  .ranking-table thead {
+    background-color: var(--surface-2);
+  }
+
+  .ranking-table th {
+    padding: 1rem;
+    text-align: left;
+    font-weight: 600;
+    color: var(--text-primary);
+    border-bottom: 2px solid var(--border);
+  }
+
+  .ranking-table td {
+    padding: 0.75rem 1rem;
+    border-bottom: 0.5px solid var(--border);
+  }
+
+  .ranking-row:hover {
+    background-color: var(--surface-2);
+  }
+
+  .ranking-row--podium {
+    background-color: var(--bg-accent);
+    font-weight: 600;
+  }
+
+  .ranking-row--podium:hover {
+    background-color: var(--bg-accent);
+  }
+
+  .ranking-cell {
+    color: var(--text-primary);
+  }
+
+  .ranking-col--rank {
+    width: 50px;
+    text-align: center;
+  }
+
+  .ranking-col--name {
+    flex: 1;
+  }
+
+  .ranking-col--points {
+    width: 100px;
+    text-align: right;
+    font-weight: 600;
+    color: var(--text-accent);
+  }
+
+  .ranking-col--percentage {
+    width: 80px;
+    text-align: center;
+  }
+
+  .ranking-col--change {
+    width: 60px;
+    text-align: center;
+    font-size: var(--font-size-lg);
+  }
+
+  .ranking-medal {
+    font-size: 20px;
+  }
+
+  .ranking-points {
+    font-weight: 600;
+    color: var(--text-accent);
+  }
+
+
+  @media (max-width: 1024px) {
+    .podium-container {
+      grid-template-columns: 1fr;
+      align-items: stretch;
+    }
+
+    .podium-card--first,
+    .podium-card--second,
+    .podium-card--third {
+      order: auto;
+      transform: scale(1);
+    }
+
+    .stats-row {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .public-dashboard {
+      padding: 0;
+    }
+
+    .podium-container {
+      gap: 0.75rem;
+    }
+
+    .podium-card {
+      padding: 1rem;
+    }
+
+    .podium-card__medal {
+      font-size: 32px;
+    }
+
+    .podium-card__name {
+      font-size: var(--font-size-base);
+    }
+
+    .podium-card__points {
+      font-size: var(--font-size-xl);
+    }
+
+    .stats-row {
+      grid-template-columns: 1fr;
+      gap: var(--gap-sm);
+    }
+
+    .stat-box {
+      padding: 0.75rem;
+    }
+
+    .ranking-section {
+      padding: 1rem;
+    }
+
+    .ranking-table {
+      font-size: var(--font-size-sm);
+    }
+
+    .ranking-table th,
+    .ranking-table td {
+      padding: 0.5rem;
+    }
+
+    .ranking-col--name {
+      min-width: 120px;
+    }
+  }
+</style>
