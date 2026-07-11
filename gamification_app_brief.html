@@ -1,0 +1,194 @@
+<div style="padding: 1rem 0; background: var(--surface-2); border-radius: 12px; border: 0.5px solid var(--border);">
+  <div style="padding: 0 1.5rem;">
+    <h1 style="font-size: 20px; font-weight: 500; margin: 1.5rem 0 0.5rem; color: var(--text-primary);">Aplikacja Gamifikacji dla Pracowników</h1>
+    <p style="font-size: 13px; color: var(--text-secondary); margin: 0 0 1.5rem;">Brief techniczny • 20 pracowników • Rozliczenia tygodniowe</p>
+  </div>
+
+  <div style="border-top: 0.5px solid var(--border); padding: 1.5rem;">
+    <h2 style="font-size: 16px; font-weight: 500; margin: 0 0 1rem; color: var(--text-primary);">1. Przegląd projektu</h2>
+    <p style="font-size: 14px; color: var(--text-primary); line-height: 1.6; margin: 0;">Aplikacja webowa do śledzenia i nagradzania pracowników za punktualność, obecność i osiągnięcia. System resetuje punkty co tydzień, wyświetla ranking i zarządza nagrodami.</p>
+  </div>
+
+  <div style="border-top: 0.5px solid var(--border); padding: 1.5rem;">
+    <h2 style="font-size: 16px; font-weight: 500; margin: 0 0 1rem; color: var(--text-primary);">2. Wymagania funkcjonalne</h2>
+    
+    <div style="margin-bottom: 1.5rem;">
+      <h3 style="font-size: 14px; font-weight: 500; margin: 0 0 0.75rem; color: var(--text-primary);">Panel Administratora</h3>
+      <ul style="font-size: 13px; color: var(--text-primary); line-height: 1.8; margin: 0; padding-left: 1.25rem;">
+        <li>Zarządzanie pracownikami (dodawanie, edycja, usuwanie)</li>
+        <li>Definiowanie kategorii punktów (np. Obecność, Punktualność, Cele)</li>
+        <li>Ręczne dodawanie punktów z powodu (kategoria + opis)</li>
+        <li>Resetowanie punktów co piątek/poniedziałek (button + potwierdzenie)</li>
+        <li>Widok bieżącego rankingu tygodnia</li>
+        <li>Historia zmian (log kto dostał ile pkt za co i kiedy)</li>
+        <li>Export danych do CSV</li>
+        <li>Ustawienia systemu (zablokuj edycję po resecie)</li>
+      </ul>
+    </div>
+
+    <div style="margin-bottom: 1.5rem;">
+      <h3 style="font-size: 14px; font-weight: 500; margin: 0 0 0.75rem; color: var(--text-primary);">Panel Pracownika</h3>
+      <ul style="font-size: 13px; color: var(--text-primary); line-height: 1.8; margin: 0; padding-left: 1.25rem;">
+        <li>Logowanie (email + hasło, lub SSO jeśli dostępne)</li>
+        <li>Wyświetlenie swoich punktów (bieżący tydzień)</li>
+        <li>Tablica liderów (top 5-10 osób)</li>
+        <li>Historia swoich punktów (ostatnich 8 tygodni)</li>
+        <li>Powiadomienie email przy przyznaniu punktów</li>
+      </ul>
+    </div>
+
+    <div>
+      <h3 style="font-size: 14px; font-weight: 500; margin: 0 0 0.75rem; color: var(--text-primary);">Dashboard publiczny</h3>
+      <ul style="font-size: 13px; color: var(--text-primary); line-height: 1.8; margin: 0; padding-left: 1.25rem;">
+        <li>Podsumowanie tygodnia (kto wygrał, ile pkt przyznano razem)</li>
+        <li>Top 3 osoby z ikonkami/medalami</li>
+      </ul>
+    </div>
+  </div>
+
+  <div style="border-top: 0.5px solid var(--border); padding: 1.5rem;">
+    <h2 style="font-size: 16px; font-weight: 500; margin: 0 0 1rem; color: var(--text-primary);">3. Schemat bazy danych</h2>
+    <pre style="background: var(--surface-1); padding: 1rem; border-radius: var(--radius); font-size: 12px; color: var(--text-primary); overflow-x: auto; line-height: 1.5; margin: 0;"><code>USERS
+├── id (UUID)
+├── email (string, unique)
+├── password_hash (string)
+├── full_name (string)
+├── role (enum: admin | user)
+├── created_at (timestamp)
+
+POINTS_CATEGORIES
+├── id (UUID)
+├── name (string) — "Obecność", "Punktualność"
+├── description (string)
+├── created_at (timestamp)
+
+POINTS_LOG
+├── id (UUID)
+├── user_id (FK → users)
+├── category_id (FK → points_categories)
+├── amount (integer)
+├── reason (text)
+├── given_by (FK → users) — admin who gave it
+├── week_number (integer) — 1-52
+├── year (integer)
+├── given_at (timestamp)
+
+WEEKLY_RESET_LOG
+├── id (UUID)
+├── reset_date (date)
+├── points_before (JSON) — backup
+├── reset_by (FK → users)</code></pre>
+  </div>
+
+  <div style="border-top: 0.5px solid var(--border); padding: 1.5rem;">
+    <h2 style="font-size: 16px; font-weight: 500; margin: 0 0 1rem; color: var(--text-primary);">4. API endpoints</h2>
+    <table style="width: 100%; font-size: 12px; border-collapse: collapse; color: var(--text-primary);">
+      <tr style="background: var(--surface-1);">
+        <td style="padding: 0.5rem; border: 0.5px solid var(--border);"><strong>Metoda</strong></td>
+        <td style="padding: 0.5rem; border: 0.5px solid var(--border);"><strong>Endpoint</strong></td>
+        <td style="padding: 0.5rem; border: 0.5px solid var(--border);"><strong>Dostęp</strong></td>
+      </tr>
+      <tr>
+        <td style="padding: 0.5rem; border: 0.5px solid var(--border);">POST</td>
+        <td style="padding: 0.5rem; border: 0.5px solid var(--border);">/auth/login</td>
+        <td style="padding: 0.5rem; border: 0.5px solid var(--border);">Public</td>
+      </tr>
+      <tr style="background: var(--surface-1);">
+        <td style="padding: 0.5rem; border: 0.5px solid var(--border);">GET</td>
+        <td style="padding: 0.5rem; border: 0.5px solid var(--border);">/api/users</td>
+        <td style="padding: 0.5rem; border: 0.5px solid var(--border);">Admin</td>
+      </tr>
+      <tr>
+        <td style="padding: 0.5rem; border: 0.5px solid var(--border);">POST</td>
+        <td style="padding: 0.5rem; border: 0.5px solid var(--border);">/api/users</td>
+        <td style="padding: 0.5rem; border: 0.5px solid var(--border);">Admin</td>
+      </tr>
+      <tr style="background: var(--surface-1);">
+        <td style="padding: 0.5rem; border: 0.5px solid var(--border);">GET</td>
+        <td style="padding: 0.5rem; border: 0.5px solid var(--border);">/api/points/current-week</td>
+        <td style="padding: 0.5rem; border: 0.5px solid var(--border);">User</td>
+      </tr>
+      <tr>
+        <td style="padding: 0.5rem; border: 0.5px solid var(--border);">POST</td>
+        <td style="padding: 0.5rem; border: 0.5px solid var(--border);">/api/points/add</td>
+        <td style="padding: 0.5rem; border: 0.5px solid var(--border);">Admin</td>
+      </tr>
+      <tr style="background: var(--surface-1);">
+        <td style="padding: 0.5rem; border: 0.5px solid var(--border);">POST</td>
+        <td style="padding: 0.5rem; border: 0.5px solid var(--border);">/api/points/reset-weekly</td>
+        <td style="padding: 0.5rem; border: 0.5px solid var(--border);">Admin</td>
+      </tr>
+      <tr>
+        <td style="padding: 0.5rem; border: 0.5px solid var(--border);">GET</td>
+        <td style="padding: 0.5rem; border: 0.5px solid var(--border);">/api/leaderboard</td>
+        <td style="padding: 0.5rem; border: 0.5px solid var(--border);">User</td>
+      </tr>
+      <tr style="background: var(--surface-1);">
+        <td style="padding: 0.5rem; border: 0.5px solid var(--border);">GET</td>
+        <td style="padding: 0.5rem; border: 0.5px solid var(--border);">/api/points/history</td>
+        <td style="padding: 0.5rem; border: 0.5px solid var(--border);">Admin</td>
+      </tr>
+      <tr>
+        <td style="padding: 0.5rem; border: 0.5px solid var(--border);">GET</td>
+        <td style="padding: 0.5rem; border: 0.5px solid var(--border);">/api/export/csv</td>
+        <td style="padding: 0.5rem; border: 0.5px solid var(--border);">Admin</td>
+      </tr>
+    </table>
+  </div>
+
+  <div style="border-top: 0.5px solid var(--border); padding: 1.5rem;">
+    <h2 style="font-size: 16px; font-weight: 500; margin: 0 0 1rem; color: var(--text-primary);">5. Stack techniczny (rekomendacja)</h2>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 0;">
+      <div>
+        <p style="font-size: 13px; font-weight: 500; color: var(--text-primary); margin: 0 0 0.5rem;"><strong>Frontend</strong></p>
+        <p style="font-size: 13px; color: var(--text-secondary); margin: 0;">React 18+ / Vue 3 / Next.js</p>
+        <p style="font-size: 13px; color: var(--text-secondary); margin: 0;">Tailwind CSS lub Material UI</p>
+      </div>
+      <div>
+        <p style="font-size: 13px; font-weight: 500; color: var(--text-primary); margin: 0 0 0.5rem;"><strong>Backend</strong></p>
+        <p style="font-size: 13px; color: var(--text-secondary); margin: 0;">Node.js + Express / Next.js API</p>
+        <p style="font-size: 13px; color: var(--text-secondary); margin: 0;">lub Python + Django / FastAPI</p>
+      </div>
+      <div>
+        <p style="font-size: 13px; font-weight: 500; color: var(--text-primary); margin: 0 0 0.5rem;"><strong>Baza danych</strong></p>
+        <p style="font-size: 13px; color: var(--text-secondary); margin: 0;">PostgreSQL (rekomendacja)</p>
+        <p style="font-size: 13px; color: var(--text-secondary); margin: 0;">lub MongoDB</p>
+      </div>
+      <div>
+        <p style="font-size: 13px; font-weight: 500; color: var(--text-primary); margin: 0 0 0.5rem;"><strong>Hosting</strong></p>
+        <p style="font-size: 13px; color: var(--text-secondary); margin: 0;">Heroku / Render / Railway</p>
+        <p style="font-size: 13px; color: var(--text-secondary); margin: 0;">lub własny VPS</p>
+      </div>
+    </div>
+  </div>
+
+  <div style="border-top: 0.5px solid var(--border); padding: 1.5rem;">
+    <h2 style="font-size: 16px; font-weight: 500; margin: 0 0 1rem; color: var(--text-primary);">6. Szacunek pracy</h2>
+    <ul style="font-size: 13px; color: var(--text-primary); line-height: 1.8; margin: 0; padding-left: 1.25rem;">
+      <li><strong>Setup i auth:</strong> 8h</li>
+      <li><strong>API endpoints:</strong> 12h</li>
+      <li><strong>Frontend admin panel:</strong> 12h</li>
+      <li><strong>Frontend user dashboard:</strong> 8h</li>
+      <li><strong>Ranking i leaderboard:</strong> 6h</li>
+      <li><strong>Email notifications:</strong> 4h</li>
+      <li><strong>Testowanie i bugfixy:</strong> 10h</li>
+      <li style="margin-top: 0.5rem;"><strong>Razem: ~60 godzin (2-3 tygodnie dla 1 juniora)</strong></li>
+    </ul>
+  </div>
+
+  <div style="border-top: 0.5px solid var(--border); padding: 1.5rem;">
+    <h2 style="font-size: 16px; font-weight: 500; margin: 0 0 1rem; color: var(--text-primary);">7. Ważne notatki</h2>
+    <ul style="font-size: 13px; color: var(--text-primary); line-height: 1.8; margin: 0; padding-left: 1.25rem;">
+      <li>Autentykacja: najpierw JWT tokens, potem opcjonalnie SSO (Google, Microsoft)</li>
+      <li>Email: SendGrid / Mailgun / nodemailer do powiadomień</li>
+      <li>Security: rate limiting, CORS, input validation</li>
+      <li>UI: responsive design (mobile + desktop)</li>
+      <li>Backup: regularny export danych</li>
+      <li>Monitoring: proste logging do testowania błędów</li>
+    </ul>
+  </div>
+
+  <div style="border-top: 0.5px solid var(--border); padding: 1.5rem; background: var(--bg-success);">
+    <p style="font-size: 13px; color: var(--text-success); margin: 0;"><strong>💡 Tip:</strong> Zaproponuj deweloperowi najpierw zrobić MVP bez emaili i eksplortu. Dodaj to später jako fase 2.</p>
+  </div>
+</div>
