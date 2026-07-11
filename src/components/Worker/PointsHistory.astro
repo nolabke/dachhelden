@@ -15,13 +15,13 @@ const { history } = Astro.props;
 
 <div class="card">
   <h2 class="title">Punkteverlauf</h2>
-  <table>
+  <table class="history-table">
     <thead>
       <tr>
         <th>Datum</th>
         <th>Kategorie</th>
         <th>Punkte</th>
-        <th>Grund</th>
+        <th style="text-align:right">Grund</th>
       </tr>
     </thead>
     <tbody>
@@ -31,18 +31,12 @@ const { history } = Astro.props;
             <td>{item.date}</td>
             <td>{item.category}</td>
             <td class="points">+{item.points}</td>
-            <td>{item.reason}</td>
+            <td style="text-align:right">{item.reason}</td>
           </tr>
         ))
       }
     </tbody>
   </table>
-</div>
-
-</tbody>
-
-</table>
-
 </div>
 
 
@@ -67,22 +61,27 @@ const { history } = Astro.props;
 }
 
 
-table {
+.history-table {
   width:100%;
   border-collapse:collapse;
+  font-size: var(--font-size-md);
+  
 }
 
-
-th,
-td {
+.history-table th,
+.history-table td {
   padding:.75rem;
   border-bottom:1px solid var(--border);
+  word-break: break-word;
+  
 }
 
 
-th {
-  text-align:left;
-  color:var(--text-secondary);
+@media (max-width: 480px) {
+  .history-table {
+    padding: .75rem;
+    word-break: break-word;
+  }
 }
 
 

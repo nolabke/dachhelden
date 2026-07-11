@@ -15,8 +15,8 @@ const medals = ['🥇', '🥈', '🥉'];
       <tr>
         <th>Platz</th>
         <th>Mitarbeitende</th>
-        <th style="text-align: right;">Punkte</th>
-        <th style="text-align: right;">Aktionen</th>
+        <th >Punkte</th>
+        <th style="text-align:right">Aktionen</th>
       </tr>
     </thead>
     <tbody>
@@ -41,6 +41,7 @@ const medals = ['🥇', '🥈', '🥉'];
     border-radius: 12px;
     padding: 1.25rem;
     margin-bottom: 2rem;
+    overflow-x: auto;
   }
 
   .ranking__title {
@@ -60,11 +61,13 @@ const medals = ['🥇', '🥈', '🥉'];
     font-weight: 600;
     text-align: left;
     background-color: var(--surface-2);
+    word-break: break-word;
   }
 
   .ranking__table td {
     padding: 0.75rem;
     border-bottom: 0.5px solid var(--border);
+    word-break: break-word;
   }
 
   .ranking__row:hover {
@@ -102,4 +105,17 @@ const medals = ['🥇', '🥈', '🥉'];
   .ranking__action-btn:hover {
     color: var(--text-primary);
   }
+
+  @media (max-width: 480px) {
+  .ranking-container {
+    padding: .75rem;
+  }
+
+  .ranking__table th,
+  .ranking__table td {
+    padding: .5rem;
+    font-size: 12px;
+  }
+}
+
 </style>

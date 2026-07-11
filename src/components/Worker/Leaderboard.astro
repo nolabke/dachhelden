@@ -14,7 +14,7 @@ const medals = ['🥇', '🥈', '🥉'];
 <div class="card">
   <h2 class="title">Wochenranking</h2>
 
-  <table>
+  <table class="ranking-table">
     <thead>
       <tr>
         <th>Platz</th>
@@ -64,6 +64,14 @@ const medals = ['🥇', '🥈', '🥉'];
   th {
   text-align:left;
   color:var(--text-secondary);
+}
+
+
+@media (max-width: 480px) {
+  .ranking-table {
+    padding: .75rem;
+    word-break: break-word;
+  }
 }
 
 
