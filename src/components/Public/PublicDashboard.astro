@@ -12,7 +12,6 @@ const { data } = Astro.props;
 const podium = data.ranking.slice(0, 3);
 const restRanking = data.ranking.slice(3);
 
-// Helper do ikonek zmian
 const getChangeIcon = (change?: string) => {
   switch (change) {
     case 'up':
@@ -33,7 +32,6 @@ const getPercentageToLeader = (points: number) => {
 ---
 
 <div class="public-dashboard">
-  {/* PODIUM - TOP 3 */}
   <div class="podium-section">
     <div class="podium-container">
       {podium.map((entry, idx) => {
@@ -56,30 +54,28 @@ const getPercentageToLeader = (points: number) => {
     </div>
   </div>
 
-  {}
   <div class="stats-row">
-  <div class="stat-box">
-    <p class="stat-label">Gesamtpunkte</p>
-    <p class="stat-value">{data.statsWeek.totalPoints}</p>
+    <div class="stat-box">
+      <p class="stat-label">Gesamtpunkte</p>
+      <p class="stat-value">{data.statsWeek.totalPoints}</p>
+    </div>
+    <div class="stat-box">
+      <p class="stat-label">Durchschnitt pro Person</p>
+      <p class="stat-value">{data.statsWeek.avgPerPerson} Pkt.</p>
+    </div>
+    <div class="stat-box">
+      <p class="stat-label">Aktive Personen</p>
+      <p class="stat-value">{data.statsWeek.activeUsers}/20</p>
+    </div>
+    <div class="stat-box">
+      <p class="stat-label">Woche</p>
+      <p class="stat-value">#{data.statsWeek.weekNumber}</p>
+    </div>
   </div>
-  <div class="stat-box">
-    <p class="stat-label">Durchschnitt pro Person</p>
-    <p class="stat-value">{data.statsWeek.avgPerPerson} Pkt.</p>
-  </div>
-  <div class="stat-box">
-    <p class="stat-label">Aktive Personen</p>
-    <p class="stat-value">{data.statsWeek.activeUsers}/20</p>
-  </div>
-  <div class="stat-box">
-    <p class="stat-label">Woche</p>
-    <p class="stat-value">#{data.statsWeek.weekNumber}</p>
-  </div>
-</div>
 
-{}
-<div class="ranking-section">
-  <h2 class="ranking-title">Gesamtranking</h2>
-  <div class="ranking-table-wrapper">
+  <div class="ranking-section">
+    <h2 class="ranking-title">Gesamtranking</h2>
+    <div class="ranking-table-wrapper">
     <table class="ranking-table">
       <thead>
         <tr>
@@ -139,7 +135,6 @@ const getPercentageToLeader = (points: number) => {
     padding: 0;
   }
 
- 
   .podium-section {
     margin-bottom: 2rem;
   }

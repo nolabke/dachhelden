@@ -4,146 +4,63 @@ import Button from '../../../components/Common/Button.astro';
 ---
 
 <BaseLayout title="Punkte vergeben" showBackButton>
+  <section class="page-header">
+    <h1>Punkte vergeben</h1>
+  </section>
 
-<section class="page-header">
-  <h1>Punkte vergeben</h1>
-</section>
+  <section class="page-content">
+    <form id="points-form" class="form">
+      <div class="form__group">
+        <label class="form__label">Mitarbeitende</label>
+        <select class="form__input" name="userId">
+          <option value="1">Anne Müller</option>
+          <option value="2">Markus Schneider</option>
+        </select>
+      </div>
 
-<section class="page-content">
+      <div class="form__group">
+        <label class="form__label">Kategorie</label>
+        <select class="form__input" name="category">
+          <option>Anwesenheit</option>
+          <option>Pünktlichkeit</option>
+          <option>Ziele</option>
+        </select>
+      </div>
 
-  <form id="points-form" class="form">
+      <div class="form__group">
+        <label class="form__label">Punkte</label>
+        <input class="form__input" type="number" name="points" value="10" />
+      </div>
 
-  <div class="form__group">
+      <div class="form__group">
+        <label class="form__label">Begründung</label>
+        <input class="form__input" name="reason" placeholder="z.B. Kein Fehltag" />
+      </div>
 
-    <label class="form__label">
-      Mitarbeitende
-    </label>
+      <div class="form__actions">
+        <Button variant="secondary" type="reset">Abbrechen</Button>
+        <Button variant="primary" type="submit">Punkte speichern</Button>
+      </div>
+    </form>
+  </section>
 
-    <select 
-      class="form__input"
-      name="userId"
-    >
-      <option value="1">
-        Anne Müller
-      </option>
+  <script>
+    const form = document.querySelector<HTMLFormElement>('#points-form');
 
-      <option value="2">
-        Markus Schneider
-      </option>
-    </select>
+    form?.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const data = Object.fromEntries(new FormData(form));
+      console.log(data);
 
-  </div>
+      await fetch('http://domena.de/api/points', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data),
+      });
 
-
-  <div class="form__group">
-
-    <label class="form__label">
-      Kategorie
-    </label>
-
-    <select
-      class="form__input"
-      name="category"
-    >
-      <option>
-        Anwesenheit
-      </option>
-
-      <option>
-        Pünktlichkeit
-      </option>
-
-      <option>
-        Ziele
-      </option>
-
-    </select>
-
-  </div>
-
-
-  <div class="form__group">
-
-    <label class="form__label">
-      Punkte
-    </label>
-
-    <input
-      class="form__input"
-      type="number"
-      name="points"
-      value="10"
-    />
-
-  </div>
-
-
-  <div class="form__group">
-
-    <label class="form__label">
-      Begründung
-    </label>
-
-    <input
-      class="form__input"
-      name="reason"
-      placeholder="z.B. Kein Fehltag"
-    />
-
-  </div>
-
-
-  <div class="form__actions">
-
-    <Button
-      variant="secondary"
-      type="reset"
-    >
-      Abbrechen
-    </Button>
-
-
-    <Button
-      variant="primary"
-      type="submit"
-    >
-      Punkte speichern
-    </Button>
-
-  </div>
-
-
-</form>
-
-</section>
-<script>
-const form = document.querySelector<HTMLFormElement>('#points-form');
-
-form?.addEventListener('submit', async (e) => {
-  e.preventDefault();
-
-  const data = Object.fromEntries(
-    new FormData(form)
-  );
-
-  console.log(data);
-
- await fetch(
-  'http://domena.de/api/points',
-  {
-    method:'POST',
-    headers:{
-      'Content-Type':'application/json'
-    },
-    body:JSON.stringify(data)
-  }
- );
-
-
- alert('Punkte gespeichert');
-
-});
-</script>
-
-
+      alert('Punkte gespeichert');
+    });
+  </script>
 </BaseLayout>

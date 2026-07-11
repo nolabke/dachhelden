@@ -4,53 +4,26 @@ import Button from '../../../components/Common/Button.astro';
 ---
 
 <BaseLayout title="Woche zurücksetzen" showBackButton>
- <section class="page-header">
+  <section class="page-header">
     <h1>Woche zurücksetzen</h1>
- </section>
-<section class="page-content">
-
+  </section>
+  <section class="page-content">
     <p>Alle Wochenpunkte werden gelöscht.</p>
-
     <div class="form__actions">
-        <Button variant="secondary"
-        type="reset">
-        Woche zurücksetzen
-        </Button>
+      <Button variant="secondary" type="reset">Woche zurücksetzen</Button>
     </div>
 
     <script>
+      document.querySelector('#reset')?.addEventListener('click', async () => {
+        const ok = confirm('Sicher zurücksetzen?');
+        if (!ok) return;
 
-    document
-    .querySelector('#reset')
-    ?.addEventListener(
-    'click',
-    async()=>{
+        await fetch('http://domena.de/api/week/reset', {
+          method: 'POST',
+        });
 
-
-    const ok =
-    confirm(
-    'Sicher zurücksetzen?'
-    );
-
-
-    if(!ok)return;
-
-
-    await fetch(
-    'http://domena.de/api/week/reset',
-    {
-    method:'POST'
-    });
-
-
-    location.href=
-    '/dachhelden/admin/dashboard';
-
-
-    });
-
+        location.href = '/dachhelden/admin/dashboard';
+      });
     </script>
-</section>
-
-
+  </section>
 </BaseLayout>

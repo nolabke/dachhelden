@@ -15,16 +15,14 @@ const { data } = Astro.props;
 <div class="admin-dashboard">
   <h1 class="admin-dashboard__title">Admin Dashboard</h1>
 
-{/* Statistiken */}
-<div class="admin-dashboard__stats">
+  <div class="admin-dashboard__stats">
   <StatsCard label="Aktive Mitarbeitende" value={`${data.activeUsers}/20`} />
   <StatsCard label="Vergebene Punkte" value={data.stats.totalPoints} />
   <StatsCard label="Durchschnittliche Punktzahl" value={`${data.stats.avgPerPerson} Pkt.`} />
   <StatsCard label="Aktuelle Woche" value={`Woche ${data.stats.weekNumber}`} />
-</div>
+  </div>
 
-  {/* Akcje */}
- <div class="admin-dashboard__actions">
+  <div class="admin-dashboard__actions">
 
   <Button variant="primary" href="/dachhelden/admin/points/add">
     + Punkte vergeben
@@ -44,10 +42,8 @@ const { data } = Astro.props;
 
 </div>
 
-  {/* Ranking */}
   <RankingTable ranking={data.ranking} />
 
-  {/* Form */}
   <PointsForm />
 </div>
 

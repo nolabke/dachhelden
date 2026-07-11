@@ -1,19 +1,10 @@
 ---
 import Card from '../Common/Card.astro';
 
-const {user}=Astro.props;
+const { user } = Astro.props;
 ---
 
 <Card>
-
-<h2>
-{user.fullName}
-</h2>
-
-
-<p>
-🏆 Rang: <span></span>
-{user.rank}
-</p>
-
+  <h2>{user.fullName}</h2>
+  <p>🏆 Rang: <span>{user.rank}</span></p>
 </Card>

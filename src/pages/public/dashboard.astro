@@ -34,68 +34,62 @@ const prizes = [
 
 const mockDashboardData: DashboardData = {
   currentUser: {
-    fullName: "Max Müller",
+    fullName: 'Max Müller',
     id: '',
     email: '',
-    role: 'user'
+    role: 'user',
+  },
+  myPoints: 120,
+  statsWeek: {
+    totalPoints: 520,
+    avgPerPerson: 43,
+    activeUsers: 12,
+    weekNumber: 28,
+  },
+  ranking: [
+    {
+      rank: 1,
+      user: {
+        fullName: 'Max Müller',
+        id: '',
+        email: '',
+        role: 'user',
+      },
+      points: 120,
+      change: 'up',
     },
-    myPoints: 120,
-    statsWeek: {
-        totalPoints: 520,
-        avgPerPerson: 43,
-        activeUsers: 12,
-        weekNumber: 28
+    {
+      rank: 2,
+      user: {
+        fullName: 'Anna Schmidt',
+        id: '',
+        email: '',
+        role: 'user',
+      },
+      points: 110,
+      change: 'same',
     },
-    ranking: [
-        {
-        rank: 1,
-        user: {
-    fullName: "Max Müller",
-    id: '',
-    email: '',
-    role: 'user'
-    },
-        points: 120,
-        change: "up"
-        },
-        {
-        rank: 2,
-        user: {
-    fullName: "Anna Schmidt",
-    id: '',
-    email: '',
-    role: 'user'
-    },
-        points: 110,
-        change: "same"
-        },
-        {
-        rank: 3,
-        user: {
-    fullName: "Lukas Schneider",
-    id: '',
-    email: '',
-    role: 'user'
-    },
+    {
+      rank: 3,
+      user: {
+        fullName: 'Lukas Schneider',
+        id: '',
+        email: '',
+        role: 'user',
+      },
       points: 95,
-      change: "down"
-    }
-  ]
+      change: 'down',
+    },
+  ],
 };
 ---
 
 <BaseLayout title="Dashboard">
-    
   <div style="padding: 1.5rem;">
     <h1 style="font-size: var(--font-size-2xl); font-weight: 700; margin-bottom: 2rem;">
       📊 Ranking dieser Woche
     </h1>
-    
-    {}
     <PrizesSection prizes={prizes} />
-    
-    
-    {}
     <PublicDashboard data={mockDashboardData} />
   </div>
 </BaseLayout>
